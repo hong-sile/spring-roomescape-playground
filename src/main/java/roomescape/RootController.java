@@ -57,6 +57,7 @@ public class RootController {
 
     @PostMapping("/reservations")
     public ResponseEntity<Reservation> addReservation(@RequestBody final ReservationAddRequest request) {
+        validateRequest(request);
         final Reservation reservation = new Reservation(
                 index.getAndIncrement(),
                 request.getName(),
@@ -69,8 +70,18 @@ public class RootController {
                 .body(reservation);
     }
 
+    private void validateRequest(final ReservationAddRequest request) {
+        if (request.getDate().isEmpty() || request.getName().isEmpty() || request.getTime().isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+    }
+
     @DeleteMapping("/reservations/{id}")
     public ResponseEntity<Reservation> removeReservation(@PathVariable Long id) {
+        final Reservation foundReservation = reservations.get(id);
+        if (foundReservation == null) {
+            throw new IllegalArgumentException();
+        }
         reservations.remove(id);
 
         return ResponseEntity.noContent().build();
