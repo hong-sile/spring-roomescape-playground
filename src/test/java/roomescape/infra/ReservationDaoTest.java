@@ -1,9 +1,7 @@
 package roomescape.infra;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static roomescape.infra.ReservationStep.브라운_예약;
-import static roomescape.infra.ReservationStep.예약_조회;
-import static roomescape.infra.ReservationStep.예약_추가;
+import static roomescape.infra.ReservationFixture.브라운_예약;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,7 @@ class ReservationDaoTest {
     @Test
     void 예약정보_전체_조회_테스트() {
         //given
-        예약_추가(jdbcTemplate, 브라운_예약);
+        reservationDao.insertReservation(브라운_예약);
         //when
         final List<Reservation> actual = reservationDao.getReservations();
 
@@ -41,9 +39,20 @@ class ReservationDaoTest {
         reservationDao.insertReservation(브라운_예약);
 
         //then
-        final List<Reservation> actual = 예약_조회(jdbcTemplate);
+        final List<Reservation> actual = reservationDao.getReservations();
         assertThat(actual)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .containsExactlyInAnyOrder(브라운_예약);
+    }
+
+    @Test
+    void 예약_삭제_테스트() {
+        //given
+        final Long id = reservationDao.insertReservation(브라운_예약);
+        //when
+        reservationDao.removeReservation(id);
+        //then
+        assertThat(reservationDao.getReservations())
+                .isEmpty();
     }
 }
