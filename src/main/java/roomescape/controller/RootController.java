@@ -1,4 +1,4 @@
-package roomescape;
+package roomescape.controller;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import roomescape.domain.Reservation;
+import roomescape.view.ReservationAddRequest;
 
 @Controller
 public class RootController {
@@ -22,17 +24,6 @@ public class RootController {
 
     public RootController() {
         this.reservations = new HashMap<>();
-//        addTestData();
-    }
-
-    private void addTestData() {
-        final Reservation testData1 = new Reservation(index.incrementAndGet(), "테스트 예약1", "2023-10-23", "10:00");
-        final Reservation testData2 = new Reservation(index.incrementAndGet(), "테스트 예약2", "2023-10-24", "10:00");
-        final Reservation testData3 = new Reservation(index.incrementAndGet(), "테스트 예약3", "2023-10-25", "10:00");
-
-        reservations.put(testData1.getId(), testData1);
-        reservations.put(testData2.getId(), testData2);
-        reservations.put(testData3.getId(), testData3);
     }
 
     @GetMapping("/")
@@ -57,7 +48,6 @@ public class RootController {
 
     @PostMapping("/reservations")
     public ResponseEntity<Reservation> addReservation(@RequestBody final ReservationAddRequest request) {
-        validateRequest(request);
         final Reservation reservation = new Reservation(
                 index.getAndIncrement(),
                 request.getName(),
@@ -70,14 +60,8 @@ public class RootController {
                 .body(reservation);
     }
 
-    private void validateRequest(final ReservationAddRequest request) {
-        if (request.getDate().isEmpty() || request.getName().isEmpty() || request.getTime().isEmpty()) {
-            throw new IllegalArgumentException();
-        }
-    }
-
     @DeleteMapping("/reservations/{id}")
-    public ResponseEntity<Reservation> removeReservation(@PathVariable Long id) {
+    public ResponseEntity<Reservation> removeReservation(@PathVariable final Long id) {
         final Reservation foundReservation = reservations.get(id);
         if (foundReservation == null) {
             throw new IllegalArgumentException();
