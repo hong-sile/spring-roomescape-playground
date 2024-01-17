@@ -1,4 +1,4 @@
-package roomescape;
+package roomescape.step;
 
 import static org.hamcrest.Matchers.is;
 
@@ -12,7 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class MissionStepTest {
+public class MissionStep1Test {
 
     @Test
     void 일단계() {
