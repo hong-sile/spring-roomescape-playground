@@ -18,6 +18,10 @@ public class Reservation {
         this(null, name, date, time);
     }
 
+    private Reservation(){
+        this(null, null, null, null);
+    }
+
     public Long getId() {
         return id;
     }
