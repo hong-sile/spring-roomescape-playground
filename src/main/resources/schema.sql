@@ -1,6 +1,8 @@
-CREATE TABLE customers
+CREATE TABLE reservation
 (
-    id         bigint not null AUTO_INCREMENT,
-    first_name VARCHAR(255),
-    last_name  VARCHAR(255)
+    id   BIGINT       NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    date VARCHAR(255) NOT NULL,
+    time VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
 );
