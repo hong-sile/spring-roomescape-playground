@@ -1,4 +1,4 @@
-package roomescape.infra;
+package roomescape.domain;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import roomescape.domain.Reservation;
 
 @Repository
 public class ReservationDao {
@@ -34,7 +33,7 @@ public class ReservationDao {
     public Long insertReservation(final Reservation reservation) {
         final String sql = "INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
-        asdf
+
         jdbcTemplate.update(connection -> {
             final PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[]{"id"});
             preparedStatement.setString(1, reservation.getName());
@@ -42,6 +41,7 @@ public class ReservationDao {
             preparedStatement.setString(3, reservation.getTime());
             return preparedStatement;
         }, keyHolder);
+
         return (Long) keyHolder.getKey();
     }
 

@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import roomescape.domain.Reservation;
-import roomescape.infra.ReservationDao;
-import roomescape.view.ReservationAddRequest;
+import roomescape.domain.ReservationDao;
 
 @Controller
 public class RootController {
@@ -42,12 +41,7 @@ public class RootController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity<Reservation> addReservation(@RequestBody final ReservationAddRequest request) {
-        final Reservation reservation = new Reservation(
-                request.getName(),
-                request.getDate(),
-                request.getTime()
-        );
+    public ResponseEntity<Reservation> addReservation(@RequestBody final Reservation reservation) {
         final Long reservationId = reservationDao.insertReservation(reservation);
 
         return ResponseEntity.created(URI.create("/reservations/" + reservationId))
